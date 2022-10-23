@@ -3,6 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoAlertPresentException
+from python_train.contact import Contact
 import unittest
 
 class TestAddContact(unittest.TestCase):
@@ -13,71 +14,56 @@ class TestAddContact(unittest.TestCase):
     def test_add_contact(self):
         wdr = self.wdr
         self.open_home_page(wdr)
-        self.login(wdr)
+        self.login(wdr, username="admin", password="secret")
         self.open_add_contact_page(wdr)
-        self.create_contact(wdr)
+        self.create_contact(wdr, Contact(firstname="First", middlename="Middle", lastname="Last", nickname="Nick", title="Title", company="Company", address="Address", home="+79010001100", mobile="+79010001101", work="+79010001102", fax="netu faxa", email="email@email.com", email2="email2@email.com", email3="email3@email.com", homepage="ya.ru", bday="1", bmonth="January", byear="1993", aday="2", amonth="February", ayear="1994", address2="Address2", phone2="phone2 495", notes="note note note"))
         self.goto_home_page(wdr)
 
     def open_home_page(self, wdr):
         # открытие домашней страницы
         wdr.get("http://localhost/addressbook/edit.php")
 
-    def login(self, wdr):
+    def login(self, wdr, username, password):
         # авторизация
-        wdr.find_element_by_name("user").click()
-        wdr.find_element_by_name("user").clear()
-        wdr.find_element_by_name("user").send_keys("admin")
-        wdr.find_element_by_name("pass").clear()
-        wdr.find_element_by_name("pass").send_keys("secret")
+        wdr.find_element_by_name("user").send_keys(username)
+        wdr.find_element_by_name("pass").send_keys(password)
         wdr.find_element_by_id("LoginForm").submit()
 
     def open_add_contact_page(self, wdr):
         # открытие страницы добавления нового контакта
         wdr.find_element_by_link_text("add new").click()
 
-    def create_contact(self, wdr):
+    def create_contact(self, wdr, contact):
         # заполнение полей формы
-        wdr.find_element_by_name("firstname").send_keys("First")
-        wdr.find_element_by_name("middlename").send_keys("Middle")
-        wdr.find_element_by_name("lastname").send_keys("Last")
-        wdr.find_element_by_name("nickname").send_keys("Nick")
-        wdr.find_element_by_name("title").send_keys("Zagolovok")
-        wdr.find_element_by_name("company").send_keys("Company")
-        wdr.find_element_by_name("address").send_keys("Address")
-        wdr.find_element_by_name("home").send_keys("home")
-        wdr.find_element_by_name("mobile").send_keys("Mobile")
-        wdr.find_element_by_name("work").send_keys("Work")
-        wdr.find_element_by_name("fax").send_keys("Fax")
-        wdr.find_element_by_name("email").send_keys("e-mail1")
-        wdr.find_element_by_name("email2").send_keys("e-mail2")
-        wdr.find_element_by_name("email3").send_keys("e-mail3")
-        wdr.find_element_by_name("homepage").send_keys("Homepage")
-        wdr.find_element_by_name("bday").click()
-        Select(wdr.find_element_by_name("bday")).select_by_visible_text("17")
-        wdr.find_element_by_xpath("//option[@value='17']").click()
-        wdr.find_element_by_name("bmonth").click()
-        Select(wdr.find_element_by_name("bmonth")).select_by_visible_text("January")
-        wdr.find_element_by_xpath("//option[@value='January']").click()
-        wdr.find_element_by_name("byear").click()
-        wdr.find_element_by_name("byear").clear()
-        wdr.find_element_by_name("byear").send_keys("1993")
-        wdr.find_element_by_name("aday").click()
-        Select(wdr.find_element_by_name("aday")).select_by_visible_text("1")
-        wdr.find_element_by_xpath("//div[@id='content']/form/select[3]/option[3]").click()
-        wdr.find_element_by_name("amonth").click()
-        Select(wdr.find_element_by_name("amonth")).select_by_visible_text("January")
-        wdr.find_element_by_xpath("//div[@id='content']/form/select[4]/option[2]").click()
-        wdr.find_element_by_name("ayear").click()
-        wdr.find_element_by_name("ayear").clear()
-        wdr.find_element_by_name("ayear").send_keys("2020")
+        wdr.find_element_by_name("firstname").send_keys(contact.firstname)
+        wdr.find_element_by_name("middlename").send_keys(contact.middlename)
+        wdr.find_element_by_name("lastname").send_keys(contact.lastname)
+        wdr.find_element_by_name("nickname").send_keys(contact.nickname)
+        wdr.find_element_by_name("title").send_keys(contact.title)
+        wdr.find_element_by_name("company").send_keys(contact.company)
+        wdr.find_element_by_name("address").send_keys(contact.address)
+        wdr.find_element_by_name("home").send_keys(contact.home)
+        wdr.find_element_by_name("mobile").send_keys(contact.mobile)
+        wdr.find_element_by_name("work").send_keys(contact.work)
+        wdr.find_element_by_name("fax").send_keys(contact.fax)
+        wdr.find_element_by_name("email").send_keys(contact.email)
+        wdr.find_element_by_name("email2").send_keys(contact.email2)
+        wdr.find_element_by_name("email3").send_keys(contact.email3)
+        wdr.find_element_by_name("homepage").send_keys(contact.homepage)
+        Select(wdr.find_element_by_name("bday")).select_by_visible_text(contact.bday)
+        Select(wdr.find_element_by_name("bmonth")).select_by_visible_text(contact.bmonth)
+        wdr.find_element_by_name("byear").send_keys(contact.byear)
+        Select(wdr.find_element_by_name("aday")).select_by_visible_text(contact.aday)
+        Select(wdr.find_element_by_name("amonth")).select_by_visible_text(contact.amonth)
+        wdr.find_element_by_name("ayear").send_keys(contact.ayear)
         # заполнение блока дополнительной информации (Secondary)
         wdr.find_element_by_name("address2").click()
         wdr.find_element_by_name("address2").clear()
-        wdr.find_element_by_name("address2").send_keys("Moscow")
+        wdr.find_element_by_name("address2").send_keys(contact.address2)
         wdr.find_element_by_name("phone2").clear()
-        wdr.find_element_by_name("phone2").send_keys("+79055405959")
+        wdr.find_element_by_name("phone2").send_keys(contact.phone2)
         wdr.find_element_by_name("notes").clear()
-        wdr.find_element_by_name("notes").send_keys("-")
+        wdr.find_element_by_name("notes").send_keys(contact.notes)
         # создание контакта
         wdr.find_element_by_name("submit").click()
 

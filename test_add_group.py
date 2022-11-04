@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-from selenium.common.exceptions import NoSuchElementException
-from selenium.common.exceptions import NoAlertPresentException
 from python_train.group import Group
 from application import Application
 import pytest
